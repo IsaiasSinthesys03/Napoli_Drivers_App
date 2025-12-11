@@ -38,9 +38,15 @@ class OrderDetailScreen extends StatelessWidget {
 
     // Si ya tenemos el order (navegación desde historial), mostrarlo directamente
     if (order != null) {
+      // Ocultar acciones de contacto si el pedido está entregado (privacidad)
+      final hideContactActions = order!.status == OrderStatus.delivered;
       return Scaffold(
         appBar: AppBar(title: const Text('Detalle del Pedido')),
-        body: _buildOrderDetail(context, order!),
+        body: _buildOrderDetail(
+          context,
+          order!,
+          hideContactActions: hideContactActions,
+        ),
       );
     }
 
@@ -143,6 +149,8 @@ class OrderDetailScreen extends StatelessWidget {
     BuildContext context,
     Order order, {
     bool isUpdating = false,
+    bool hideContactActions =
+        false, // Ocultar botones de contacto para privacidad
   }) {
     return Column(
       children: [
@@ -157,31 +165,32 @@ class OrderDetailScreen extends StatelessWidget {
                 _buildHeader(context, order),
                 const SizedBox(height: AppDimensions.spacingL),
 
-                // Info del cliente
+                // Info del cliente (sin botón de llamar si está oculto)
                 CustomerInfoCard(
                   name: order.customerName,
                   phone: order.customerPhone,
-                  onCallPressed: () async {
-                    print('🟢 Call button pressed for: ${order.customerPhone}');
-                    await phoneService.call(order.customerPhone);
-                  },
+                  onCallPressed: hideContactActions
+                      ? null // Ocultar botón de llamar
+                      : () {
+                          phoneService.call(order.customerPhone);
+                        },
                 ),
                 const SizedBox(height: AppDimensions.spacingL),
 
-                // Dirección de entrega
-                DeliveryAddressCard(
-                  address: order.deliveryAddress,
-                  onNavigatePressed: () async {
-                    print('🟢 Navigate button pressed');
-                    print('🟢 Address: ${order.deliveryAddress.street}');
-                    await navigationService.openMaps(
-                      latitude: order.deliveryAddress.latitude,
-                      longitude: order.deliveryAddress.longitude,
-                      label: order.deliveryAddress.street,
-                    );
-                  },
-                ),
-                const SizedBox(height: AppDimensions.spacingL),
+                // Dirección de entrega (oculta completamente para pedidos entregados)
+                if (!hideContactActions)
+                  DeliveryAddressCard(
+                    address: order.deliveryAddress,
+                    onNavigatePressed: () {
+                      navigationService.openMaps(
+                        latitude: order.deliveryAddress.latitude,
+                        longitude: order.deliveryAddress.longitude,
+                        label: order.deliveryAddress.street,
+                      );
+                    },
+                  ),
+                if (!hideContactActions)
+                  const SizedBox(height: AppDimensions.spacingL),
 
                 // Items del pedido
                 OrderItemsList(items: order.items),

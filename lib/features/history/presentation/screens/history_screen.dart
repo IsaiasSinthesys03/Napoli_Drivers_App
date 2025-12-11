@@ -10,7 +10,6 @@ import '../../../dashboard/presentation/cubit/dashboard_state.dart';
 import '../../domain/entities/delivery_period.dart';
 import '../cubit/history_cubit.dart';
 import '../cubit/history_state.dart';
-import '../widgets/earnings_summary_card.dart';
 import '../widgets/completed_order_card.dart';
 
 /// Pantalla de historial de entregas
@@ -74,14 +73,6 @@ class HistoryScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                // Resumen de ganancias
-                                EarningsSummaryCard(
-                                  totalEarnings: state.totalEarnings,
-                                  deliveryCount: state.deliveryCount,
-                                  averageEarnings: state.averageEarnings,
-                                ),
-                                const SizedBox(height: AppDimensions.spacingL),
-
                                 // Lista de pedidos
                                 ...state.orders.map(
                                   (order) => CompletedOrderCard(

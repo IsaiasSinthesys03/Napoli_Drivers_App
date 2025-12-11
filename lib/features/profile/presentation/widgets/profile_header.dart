@@ -104,25 +104,10 @@ class ProfileHeader extends StatelessWidget {
           const SizedBox(height: AppDimensions.spacingL),
 
           // Estadísticas
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildStat(
-                icon: Icons.delivery_dining,
-                label: 'Entregas',
-                value: driver.totalDeliveries.toString(),
-              ),
-              Container(
-                height: 40,
-                width: 1,
-                color: Colors.white.withValues(alpha: 0.3),
-              ),
-              _buildStat(
-                icon: Icons.attach_money,
-                label: 'Ganancias',
-                value: '\$${driver.totalEarnings.toStringAsFixed(0)}',
-              ),
-            ],
+          _buildStat(
+            icon: Icons.delivery_dining,
+            label: 'Entregas Totales',
+            value: driver.totalDeliveries.toString(),
           ),
         ],
       ),
@@ -136,12 +121,12 @@ class ProfileHeader extends StatelessWidget {
   }) {
     return Column(
       children: [
-        Icon(icon, color: Colors.white, size: 24),
-        const SizedBox(height: 4),
-        Text(value, style: AppTextStyles.h3.copyWith(color: Colors.white)),
+        Icon(icon, color: Colors.white, size: 32),
+        const SizedBox(height: 8),
+        Text(value, style: AppTextStyles.h2.copyWith(color: Colors.white)),
         Text(
           label,
-          style: AppTextStyles.bodySmall.copyWith(
+          style: AppTextStyles.bodyMedium.copyWith(
             color: Colors.white.withValues(alpha: 0.8),
           ),
         ),

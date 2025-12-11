@@ -8,12 +8,12 @@ import '../../../../../core/widgets/pressable_scale.dart';
 class CustomerInfoCard extends StatelessWidget {
   final String name;
   final String phone;
-  final VoidCallback onCallPressed;
+  final VoidCallback? onCallPressed; // Opcional para ocultar botón
 
   const CustomerInfoCard({
     required this.name,
     required this.phone,
-    required this.onCallPressed,
+    this.onCallPressed, // Ahora es opcional
     super.key,
   });
 
@@ -62,26 +62,27 @@ class CustomerInfoCard extends StatelessWidget {
             ),
           ),
 
-          // Botón llamar
-          Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: onCallPressed,
-              customBorder: const CircleBorder(),
-              child: Container(
-                padding: const EdgeInsets.all(AppDimensions.spacingM),
-                decoration: const BoxDecoration(
-                  color: AppColors.successGreen,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.phone,
-                  color: AppColors.white,
-                  size: 24,
+          // Botón llamar (solo si se proporciona callback)
+          if (onCallPressed != null)
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: onCallPressed,
+                customBorder: const CircleBorder(),
+                child: Container(
+                  padding: const EdgeInsets.all(AppDimensions.spacingM),
+                  decoration: const BoxDecoration(
+                    color: AppColors.successGreen,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.phone,
+                    color: AppColors.white,
+                    size: 24,
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );

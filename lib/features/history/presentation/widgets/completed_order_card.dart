@@ -101,18 +101,18 @@ class CompletedOrderCard extends StatelessWidget {
               ),
               const SizedBox(height: AppDimensions.spacingS),
 
-              // Dirección
+              // Cliente
               Row(
                 children: [
                   Icon(
-                    Icons.location_on,
+                    Icons.person_outline,
                     size: 16,
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                   const SizedBox(width: 4),
                   Expanded(
                     child: Text(
-                      order.deliveryAddress.street,
+                      order.customerName,
                       style: AppTextStyles.bodySmall.copyWith(
                         color: theme.colorScheme.onSurface.withValues(
                           alpha: 0.7,
@@ -126,26 +126,10 @@ class CompletedOrderCard extends StatelessWidget {
               ),
               const SizedBox(height: AppDimensions.spacingM),
 
-              // Footer: Ganancia y flecha
+              // Footer: Solo flecha
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.attach_money,
-                        size: 20,
-                        color: AppColors.successGreen,
-                      ),
-                      Text(
-                        '\$${order.driverEarnings.toStringAsFixed(0)}',
-                        style: AppTextStyles.h4.copyWith(
-                          color: AppColors.successGreen,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
                   Icon(Icons.chevron_right, color: theme.colorScheme.primary),
                 ],
               ),

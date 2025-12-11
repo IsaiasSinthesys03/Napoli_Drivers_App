@@ -8,11 +8,11 @@ import '../../domain/entities/delivery_address.dart';
 /// Card con dirección de entrega y botón de navegación
 class DeliveryAddressCard extends StatelessWidget {
   final DeliveryAddress address;
-  final VoidCallback onNavigatePressed;
+  final VoidCallback? onNavigatePressed; // Opcional para ocultar botón
 
   const DeliveryAddressCard({
     required this.address,
-    required this.onNavigatePressed,
+    this.onNavigatePressed, // Ahora es opcional
     super.key,
   });
 
@@ -91,13 +91,14 @@ class DeliveryAddressCard extends StatelessWidget {
 
           const SizedBox(height: AppDimensions.spacingM),
 
-          // Botón navegar
-          AppButton(
-            label: 'Navegar',
-            icon: Icons.navigation,
-            type: AppButtonType.secondary,
-            onPressed: onNavigatePressed,
-          ),
+          // Botón navegar (solo si se proporciona callback)
+          if (onNavigatePressed != null)
+            AppButton(
+              label: 'Navegar',
+              icon: Icons.navigation,
+              type: AppButtonType.secondary,
+              onPressed: onNavigatePressed!,
+            ),
         ],
       ),
     );

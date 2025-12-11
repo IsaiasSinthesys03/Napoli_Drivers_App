@@ -104,19 +104,19 @@ class ProfileScreen extends StatelessWidget {
                   ? state.profile
                   : (state as ProfileUpdated).profile;
 
-              return Column(
-                children: [
-                  // Header con foto y estadísticas
-                  ProfileHeader(
-                    profile: profile,
-                    onEditPressed: () {
-                      context.push('/profile/edit', extra: profile);
-                    },
-                  ),
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Header con foto y estadísticas
+                    ProfileHeader(
+                      profile: profile,
+                      onEditPressed: () {
+                        context.push('/profile/edit', extra: profile);
+                      },
+                    ),
 
-                  // Contenido scrolleable
-                  Expanded(
-                    child: SingleChildScrollView(
+                    Padding(
                       padding: const EdgeInsets.all(AppDimensions.spacingL),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -155,8 +155,8 @@ class ProfileScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             }
 

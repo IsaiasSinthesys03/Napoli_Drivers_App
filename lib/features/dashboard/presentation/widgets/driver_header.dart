@@ -56,17 +56,6 @@ class DriverHeader extends StatelessWidget {
                 const SizedBox(height: AppDimensions.spacingXS),
                 Row(
                   children: [
-                    Icon(Icons.star, size: 16, color: AppColors.warningOrange),
-                    const SizedBox(width: 4),
-                    Text(
-                      driver.rating.toStringAsFixed(1),
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(
-                          alpha: 0.7,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: AppDimensions.spacingM),
                     Icon(
                       Icons.delivery_dining,
                       size: 16,
