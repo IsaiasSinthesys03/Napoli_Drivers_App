@@ -8,45 +8,49 @@ class RegisterUseCase {
 
   const RegisterUseCase(this.repository);
 
+  /// Registra un nuevo repartidor
+  /// Retorna Either con error (Left) o Driver registrado (Right)
   Future<Either<String, Driver>> call({
+    required String restaurantId,
     required String name,
     required String email,
     required String password,
-    required String confirmPassword,
     required String phone,
     required String vehicleType,
     required String licensePlate,
-    String? profileImagePath,
+    String? photoUrl,
   }) async {
-    // Validaciones
-    if (name.isEmpty || name.length < 3) {
-      return left('El nombre debe tener al menos 3 caracteres');
-    }
-    if (email.isEmpty || !_isValidEmail(email)) {
-      return left('Email inválido');
-    }
-    if (password.isEmpty || password.length < 6) {
-      return left('La contraseña debe tener al menos 6 caracteres');
-    }
-    if (password != confirmPassword) {
-      return left('Las contraseñas no coinciden');
-    }
-    if (phone.isEmpty) {
-      return left('El teléfono es requerido');
-    }
-    if (licensePlate.isEmpty) {
-      return left('La placa/patente es requerida');
+    // Validaciones básicas
+    if (name.trim().isEmpty) {
+      return left('El nombre es requerido');
     }
 
-    // Delegar al repositorio
+    if (email.trim().isEmpty || !_isValidEmail(email)) {
+      return left('Email inválido');
+    }
+
+    if (password.length < 6) {
+      return left('La contraseña debe tener al menos 6 caracteres');
+    }
+
+    if (phone.trim().isEmpty) {
+      return left('El teléfono es requerido');
+    }
+
+    if (licensePlate.trim().isEmpty) {
+      return left('La placa es requerida');
+    }
+
+    // Llamar al repositorio
     return repository.register(
+      restaurantId: restaurantId,
       name: name,
       email: email,
       password: password,
       phone: phone,
       vehicleType: vehicleType,
       licensePlate: licensePlate,
-      profileImagePath: profileImagePath,
+      photoUrl: photoUrl,
     );
   }
 

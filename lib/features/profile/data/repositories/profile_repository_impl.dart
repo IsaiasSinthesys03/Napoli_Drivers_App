@@ -2,11 +2,11 @@ import 'package:fpdart/fpdart.dart';
 import '../../domain/entities/driver_profile.dart';
 import '../../domain/repositories/profile_repository.dart';
 import '../../../auth/domain/entities/driver.dart';
-import '../datasources/mock_profile_datasource.dart';
+import '../datasources/profile_remote_datasource.dart';
 
-/// Implementación del repositorio de perfil usando mock data source
+/// Implementación del repositorio de perfil usando Supabase
 class ProfileRepositoryImpl implements ProfileRepository {
-  final MockProfileDataSource _dataSource;
+  final ProfileRemoteDataSource _dataSource;
 
   ProfileRepositoryImpl(this._dataSource);
 

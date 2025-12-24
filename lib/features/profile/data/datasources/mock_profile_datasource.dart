@@ -25,20 +25,23 @@ class MockProfileDataSource {
     // Crear driver mock (en producción vendría del backend)
     final driver = Driver(
       id: driverId,
+      restaurantId: 'mock-restaurant-id',
       name: _prefs.getString('driver_name') ?? 'Juan Pérez',
       email: _prefs.getString('driver_email') ?? 'juan.perez@napoli.com',
       phone: _prefs.getString('driver_phone') ?? '+54 11 1234-5678',
-      profileImageUrl: _prefs.getString('driver_image'),
+      photoUrl: _prefs.getString('driver_image'),
       vehicleType: _getVehicleType(_prefs.getString('vehicle_type')),
       licensePlate: _prefs.getString('license_plate') ?? 'ABC 123',
       status: DriverStatus.active,
       isOnline: _prefs.getBool('is_online') ?? false,
+      isOnDelivery: false,
       createdAt: DateTime.parse(
         _prefs.getString('created_at') ?? DateTime.now().toString(),
       ),
       totalDeliveries: _prefs.getInt('total_deliveries') ?? 156,
-      rating: _prefs.getDouble('rating') ?? 4.8,
-      totalEarnings: _prefs.getDouble('total_earnings') ?? 12450.50,
+      averageRating: _prefs.getDouble('rating') ?? 4.8,
+      totalEarningsCents: (_prefs.getDouble('total_earnings') ?? 12450.50 * 100)
+          .toInt(),
     );
 
     return DriverProfile(
@@ -60,8 +63,8 @@ class MockProfileDataSource {
     await _prefs.setString('driver_phone', driver.phone);
     await _prefs.setString('license_plate', driver.licensePlate);
     await _prefs.setString('vehicle_type', driver.vehicleType.name);
-    if (driver.profileImageUrl != null) {
-      await _prefs.setString('driver_image', driver.profileImageUrl!);
+    if (driver.photoUrl != null) {
+      await _prefs.setString('driver_image', driver.photoUrl!);
     }
 
     return driver;

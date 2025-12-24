@@ -2,11 +2,11 @@ import 'package:fpdart/fpdart.dart' hide Order;
 import '../../../orders/domain/entities/order.dart';
 import '../../domain/entities/delivery_period.dart';
 import '../../domain/repositories/history_repository.dart';
-import '../datasources/mock_history_datasource.dart';
+import '../datasources/history_remote_datasource.dart';
 
-/// Implementación del repositorio de historial usando datos mock
+/// Implementación del repositorio de historial usando Supabase
 class HistoryRepositoryImpl implements HistoryRepository {
-  final MockHistoryDataSource _dataSource;
+  final HistoryRemoteDataSource _dataSource;
 
   HistoryRepositoryImpl(this._dataSource);
 

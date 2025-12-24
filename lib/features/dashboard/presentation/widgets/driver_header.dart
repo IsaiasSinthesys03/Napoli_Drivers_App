@@ -33,10 +33,10 @@ class DriverHeader extends StatelessWidget {
           CircleAvatar(
             radius: 30,
             backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
-            backgroundImage: driver.profileImageUrl != null
-                ? NetworkImage(driver.profileImageUrl!)
+            backgroundImage: driver.photoUrl != null
+                ? NetworkImage(driver.photoUrl!)
                 : null,
-            child: driver.profileImageUrl == null
+            child: driver.photoUrl == null
                 ? Icon(Icons.person, size: 32, color: theme.colorScheme.primary)
                 : null,
           ),

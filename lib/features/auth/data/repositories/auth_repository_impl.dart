@@ -2,12 +2,12 @@ import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/entities/driver.dart';
 import '../../domain/repositories/auth_repository.dart';
-import '../datasources/mock_auth_datasource.dart';
+import '../datasources/auth_remote_datasource.dart';
 import '../models/driver_model.dart';
 
-/// Implementación del repositorio de autenticación usando Mock DataSource
+/// Implementación del repositorio de autenticación usando Supabase
 class AuthRepositoryImpl implements AuthRepository {
-  final MockAuthDataSource dataSource;
+  final AuthRemoteDataSource dataSource;
   final SharedPreferences prefs;
 
   // Keys para SharedPreferences
@@ -22,11 +22,10 @@ class AuthRepositoryImpl implements AuthRepository {
     required String password,
   }) async {
     try {
-      final driverModel = await dataSource.login(email, password);
-
-      if (driverModel == null) {
-        return left('Credenciales inválidas');
-      }
+      final driverModel = await dataSource.login(
+        email: email,
+        password: password,
+      );
 
       // Convertir a entidad
       final driver = driverModel.toEntity();
@@ -35,31 +34,33 @@ class AuthRepositoryImpl implements AuthRepository {
       await prefs.setString(_keyDriverId, driver.id);
       await prefs.setBool(_keyIsLoggedIn, true);
 
-      return right(driver);
+      return Right(driverModel.toEntity());
     } catch (e) {
-      return left(e.toString().replaceAll('Exception: ', ''));
+      return Left(e.toString());
     }
   }
 
   @override
   Future<Either<String, Driver>> register({
+    required String restaurantId,
     required String name,
     required String email,
     required String password,
     required String phone,
     required String vehicleType,
     required String licensePlate,
-    String? profileImagePath,
+    String? photoUrl,
   }) async {
     try {
       final driverModel = await dataSource.register(
+        restaurantId: restaurantId,
         name: name,
         email: email,
         password: password,
         phone: phone,
         vehicleType: vehicleType,
         licensePlate: licensePlate,
-        profileImagePath: profileImagePath,
+        photoUrl: photoUrl,
       );
 
       final driver = driverModel.toEntity();
@@ -75,20 +76,15 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> logout() async {
+    await dataSource.logout();
     await prefs.remove(_keyDriverId);
     await prefs.setBool(_keyIsLoggedIn, false);
   }
 
   @override
   Future<Driver?> getCurrentDriver() async {
-    final isLoggedIn = prefs.getBool(_keyIsLoggedIn) ?? false;
-    if (!isLoggedIn) return null;
-
-    final driverId = prefs.getString(_keyDriverId);
-    if (driverId == null) return null;
-
     try {
-      final driverModel = await dataSource.getDriverById(driverId);
+      final driverModel = await dataSource.getCurrentDriver();
       return driverModel?.toEntity();
     } catch (e) {
       return null;

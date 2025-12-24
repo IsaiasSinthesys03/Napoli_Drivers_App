@@ -20,16 +20,19 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) {
-        final cubit = getIt<ProfileCubit>();
-        // Cargar perfil del driver actual
-        final dashboardState = context.read<DashboardCubit>().state;
-        if (dashboardState is DashboardLoaded) {
-          cubit.loadProfile(dashboardState.driver.id);
-        }
-        return cubit;
-      },
+    // Obtener la instancia singleton del cubit
+    final cubit = getIt<ProfileCubit>();
+
+    // Cargar perfil si es necesario (si no tiene driver ID o si queremos refrescar)
+    final dashboardState = context.read<DashboardCubit>().state;
+    if (dashboardState is DashboardLoaded) {
+      // Solo cargar si no se ha cargado o si el ID es diferente
+      // Opcional: podrías verificar cubit.state para decidir si cargar
+      cubit.loadProfile(dashboardState.driver.id);
+    }
+
+    return BlocProvider.value(
+      value: cubit,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Perfil'),

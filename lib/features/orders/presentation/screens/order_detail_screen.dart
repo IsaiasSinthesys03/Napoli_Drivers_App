@@ -13,6 +13,10 @@ import '../cubit/orders_cubit.dart';
 import '../cubit/orders_state.dart';
 import '../widgets/customer_info_card.dart';
 import '../widgets/delivery_address_card.dart';
+import 'package:go_router/go_router.dart';
+import '../../../dashboard/presentation/cubit/dashboard_cubit.dart';
+import '../../../profile/presentation/cubit/profile_cubit.dart';
+import '../../../../core/di/injection.dart';
 import '../widgets/order_items_list.dart';
 
 /// Pantalla de detalle de pedido
@@ -62,6 +66,25 @@ class OrderDetailScreen extends StatelessWidget {
                 backgroundColor: theme.colorScheme.error,
               ),
             );
+          } else if (state is OrderDetailLoaded) {
+            if (state.order.status == OrderStatus.delivered) {
+              // Refrescar toda la app
+              print('🟢 Order delivered, refreshing app state...');
+              getIt<DashboardCubit>().reloadDriver();
+              getIt<ProfileCubit>().reloadProfile();
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Pedido entregado exitosamente'),
+                  backgroundColor: AppColors.successGreen,
+                ),
+              );
+
+              // Volver al dashboard
+              if (context.canPop()) {
+                context.pop();
+              }
+            }
           }
         },
         builder: (context, state) {
@@ -430,13 +453,11 @@ class OrderDetailScreen extends StatelessWidget {
         cubit.acceptOrder(orderId, driverId);
         break;
       case OrderStatus.accepted:
-        cubit.confirmPickup(orderId);
+        cubit.confirmPickup(orderId, driverId);
         break;
       case OrderStatus.pickedUp:
-        cubit.markOnTheWay(orderId);
-        break;
       case OrderStatus.onTheWay:
-        cubit.markDelivered(orderId);
+        cubit.markDelivered(orderId, driverId);
         break;
       default:
         break;

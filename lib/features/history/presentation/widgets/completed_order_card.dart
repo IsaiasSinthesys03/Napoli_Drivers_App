@@ -92,7 +92,7 @@ class CompletedOrderCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    '${timeFormat.format(order.deliveredAt!)} - ${dateFormat.format(order.deliveredAt!)}',
+                    '${timeFormat.format(order.deliveredAt!.toLocal())} - ${dateFormat.format(order.deliveredAt!.toLocal())}',
                     style: AppTextStyles.bodySmall.copyWith(
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                     ),

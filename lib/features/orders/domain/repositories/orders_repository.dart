@@ -30,4 +30,10 @@ abstract class OrdersRepository {
     String orderId,
     OrderStatus newStatus,
   );
+
+  /// Confirma recogida del pedido (con driver ID)
+  Future<Either<String, Order>> pickupOrder(String orderId, String driverId);
+
+  /// Completa el pedido (marca como entregado)
+  Future<Either<String, Order>> completeOrder(String orderId, String driverId);
 }

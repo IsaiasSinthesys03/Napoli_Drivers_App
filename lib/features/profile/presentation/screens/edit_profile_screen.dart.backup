@@ -59,36 +59,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       ),
       body: BlocListener<ProfileCubit, ProfileState>(
         listener: (context, state) {
-          print('🔍 DEBUG - EditProfileScreen listener: state = $state');
-
           if (state is ProfileUpdated) {
-            print('✅ DEBUG - Profile updated successfully');
-            print('📦 DEBUG - Updated driver: ${state.profile.driver.name}');
-
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Perfil actualizado exitosamente'),
-                backgroundColor: AppColors.successGreen,
-              ),
-            );
-
-            print('🔄 DEBUG - Calling DashboardCubit.initialize()');
-            try {
-              context.read<DashboardCubit>().initialize(state.profile.driver);
-              print(
-                '✅ DEBUG - DashboardCubit.initialize() called successfully',
-              );
-            } catch (e) {
-              print('❌ DEBUG - Error calling DashboardCubit.initialize(): $e');
-            }
-
-            context.pop();
-          }
-
-          if (state is ProfileError) {
-            print('❌ DEBUG - Profile error: ${state.message}');
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
                 content: Text(state.message),
                 backgroundColor: AppColors.errorRed,
               ),

@@ -39,10 +39,10 @@ class ProfileHeader extends StatelessWidget {
               CircleAvatar(
                 radius: 50,
                 backgroundColor: Colors.white,
-                backgroundImage: driver.profileImageUrl != null
-                    ? NetworkImage(driver.profileImageUrl!)
+                backgroundImage: driver.photoUrl != null
+                    ? NetworkImage(driver.photoUrl!)
                     : null,
-                child: driver.profileImageUrl == null
+                child: driver.photoUrl == null
                     ? const Icon(
                         Icons.person,
                         size: 50,
@@ -96,7 +96,7 @@ class ProfileHeader extends StatelessWidget {
               const Icon(Icons.star, color: Colors.amber, size: 20),
               const SizedBox(width: 4),
               Text(
-                driver.rating.toStringAsFixed(1),
+                (driver.averageRating ?? 0.0).toStringAsFixed(1),
                 style: AppTextStyles.bodyLarge.copyWith(color: Colors.white),
               ),
             ],

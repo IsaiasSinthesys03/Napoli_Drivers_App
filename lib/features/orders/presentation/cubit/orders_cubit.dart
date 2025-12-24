@@ -87,18 +87,38 @@ class OrdersCubit extends Cubit<OrdersState> {
   }
 
   /// Confirma recogida del pedido
-  Future<void> confirmPickup(String orderId) async {
-    await _updateStatus(orderId, repository.confirmPickup(orderId));
+  Future<void> confirmPickup(String orderId, String driverId) async {
+    final currentState = state;
+    if (currentState is! OrderDetailLoaded) return;
+
+    emit(OrderUpdating(currentState.order));
+
+    final result = await repository.pickupOrder(orderId, driverId);
+
+    result.fold((error) {
+      emit(OrdersError(error));
+      emit(currentState);
+    }, (updatedOrder) => emit(OrderDetailLoaded(updatedOrder)));
   }
 
-  /// Marca pedido en camino
-  Future<void> markOnTheWay(String orderId) async {
-    await _updateStatus(orderId, repository.markOnTheWay(orderId));
+  /// Marca pedido en camino (same as confirmPickup in our flow)
+  Future<void> markOnTheWay(String orderId, String driverId) async {
+    await confirmPickup(orderId, driverId);
   }
 
   /// Marca pedido como entregado
-  Future<void> markDelivered(String orderId) async {
-    await _updateStatus(orderId, repository.markDelivered(orderId));
+  Future<void> markDelivered(String orderId, String driverId) async {
+    final currentState = state;
+    if (currentState is! OrderDetailLoaded) return;
+
+    emit(OrderUpdating(currentState.order));
+
+    final result = await repository.completeOrder(orderId, driverId);
+
+    result.fold((error) {
+      emit(OrdersError(error));
+      emit(currentState);
+    }, (updatedOrder) => emit(OrderDetailLoaded(updatedOrder)));
   }
 
   /// Método auxiliar para actualizar estado

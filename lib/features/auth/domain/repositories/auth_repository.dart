@@ -14,13 +14,14 @@ abstract class AuthRepository {
   /// Registra un nuevo repartidor
   /// El repartidor se crea con status 'pending'
   Future<Either<String, Driver>> register({
+    required String restaurantId,
     required String name,
     required String email,
     required String password,
     required String phone,
     required String vehicleType,
     required String licensePlate,
-    String? profileImagePath,
+    String? photoUrl,
   });
 
   /// Cierra la sesión actual

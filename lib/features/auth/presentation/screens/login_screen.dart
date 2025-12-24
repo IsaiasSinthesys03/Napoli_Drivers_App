@@ -9,7 +9,6 @@ import '../../../../core/navigation/routes.dart';
 import '../../../dashboard/presentation/cubit/dashboard_cubit.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
-import 'register_screen.dart';
 
 /// Pantalla de inicio de sesión
 class LoginScreen extends StatefulWidget {
@@ -59,6 +58,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
           // Navigate to dashboard when authenticated
           if (state is Authenticated) {
+            // Mostrar mensaje de éxito
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text('¡Inicio de sesión exitoso!'),
+                backgroundColor: Colors.green,
+                behavior: SnackBarBehavior.floating,
+                duration: const Duration(seconds: 2),
+              ),
+            );
             // Initialize dashboard with driver data
             context.read<DashboardCubit>().initialize(state.driver);
             // Navigate to dashboard
@@ -67,6 +75,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
           // Navigate to pending approval screen
           if (state is Registered) {
+            // Mostrar mensaje de éxito
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text(
+                  '¡Registro exitoso! Tu cuenta está pendiente de aprobación.',
+                ),
+                backgroundColor: Colors.green,
+                behavior: SnackBarBehavior.floating,
+                duration: const Duration(seconds: 3),
+              ),
+            );
             context.go(AppRoutes.pendingApproval, extra: state.driver);
           }
         },
@@ -177,11 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (_) => const RegisterScreen(),
-                              ),
-                            );
+                            context.go(AppRoutes.register);
                           },
                           child: Text(
                             'Regístrate',

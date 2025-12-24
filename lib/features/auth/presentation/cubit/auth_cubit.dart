@@ -37,26 +37,26 @@ class AuthCubit extends Cubit<AuthState> {
 
   /// Registra un nuevo repartidor
   Future<void> register({
+    required String restaurantId,
     required String name,
     required String email,
     required String password,
-    required String confirmPassword,
     required String phone,
     required String vehicleType,
     required String licensePlate,
-    String? profileImagePath,
+    String? photoUrl,
   }) async {
     emit(const AuthLoading());
 
     final result = await registerUseCase(
+      restaurantId: restaurantId,
       name: name,
       email: email,
       password: password,
-      confirmPassword: confirmPassword,
       phone: phone,
       vehicleType: vehicleType,
       licensePlate: licensePlate,
-      profileImagePath: profileImagePath,
+      photoUrl: photoUrl,
     );
 
     result.fold(

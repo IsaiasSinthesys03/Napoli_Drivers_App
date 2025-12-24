@@ -43,7 +43,6 @@ enum OrderStatus {
       case OrderStatus.accepted:
         return 'Confirmar Recogida';
       case OrderStatus.pickedUp:
-        return 'Marcar En Camino';
       case OrderStatus.onTheWay:
         return 'Marcar Entregado';
       case OrderStatus.delivered:

@@ -104,8 +104,8 @@ final appRouter = GoRouter(
                   path: AppRoutes.editProfile,
                   builder: (context, state) {
                     final profile = state.extra as DriverProfile;
-                    return BlocProvider(
-                      create: (_) => getIt<ProfileCubit>(),
+                    return BlocProvider.value(
+                      value: getIt<ProfileCubit>(),
                       child: EditProfileScreen(profile: profile),
                     );
                   },

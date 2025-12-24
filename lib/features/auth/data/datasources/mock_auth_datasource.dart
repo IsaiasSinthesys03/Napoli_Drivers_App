@@ -8,34 +8,42 @@ class MockAuthDataSource {
     // Usuario 1: Repartidor APROBADO - Puede usar la app
     DriverModel(
       id: '1',
+      restaurantId: 'mock-restaurant-id',
       name: 'Juan Pérez',
       email: 'repartidor@napoli.com',
       phone: '+5491123456789',
-      profileImageUrl: null,
+      photoUrl: null,
       vehicleType: 'moto',
       licensePlate: 'ABC123',
       status: 'approved', // ✅ APROBADO
       isOnline: false,
+      isOnDelivery: false,
       createdAt: DateTime(2024, 1, 15).toIso8601String(),
       totalDeliveries: 145,
-      rating: 4.8,
-      totalEarnings: 7250.0,
+      ratingSum: 720,
+      ratingCount: 150,
+      averageRating: 4.8,
+      totalEarningsCents: 725000,
     ),
     // Usuario 2: Repartidor PENDIENTE - Verá pantalla de espera
     DriverModel(
       id: '2',
+      restaurantId: 'mock-restaurant-id',
       name: 'María García',
       email: 'nuevo@napoli.com',
       phone: '+5491198765432',
-      profileImageUrl: null,
+      photoUrl: null,
       vehicleType: 'bici',
       licensePlate: 'XYZ789',
       status: 'pending', // ⏳ PENDIENTE
       isOnline: false,
+      isOnDelivery: false,
       createdAt: DateTime.now().toIso8601String(),
       totalDeliveries: 0,
-      rating: 0.0,
-      totalEarnings: 0.0,
+      ratingSum: 0,
+      ratingCount: 0,
+      averageRating: 0.0,
+      totalEarningsCents: 0,
     ),
   ];
 
@@ -87,18 +95,22 @@ class MockAuthDataSource {
     // Crear nuevo repartidor con status PENDING
     final newDriver = DriverModel(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
+      restaurantId: 'mock-restaurant-id',
       name: name,
       email: email,
       phone: phone,
-      profileImageUrl: profileImagePath,
+      photoUrl: profileImagePath,
       vehicleType: vehicleType,
       licensePlate: licensePlate,
       status: 'pending', // Siempre pending al registrarse
       isOnline: false,
+      isOnDelivery: false,
       createdAt: DateTime.now().toIso8601String(),
       totalDeliveries: 0,
-      rating: 0.0,
-      totalEarnings: 0.0,
+      ratingSum: 0,
+      ratingCount: 0,
+      averageRating: 0.0,
+      totalEarningsCents: 0,
     );
 
     // Agregar a la "base de datos"

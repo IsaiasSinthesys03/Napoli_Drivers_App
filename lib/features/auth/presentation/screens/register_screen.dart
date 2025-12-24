@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:go_router/go_router.dart';
 import 'dart:io';
+import '../../../../core/config/app_config.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/theme/app_dimensions.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_text_field.dart';
+import '../../../../core/navigation/routes.dart';
 import '../../domain/entities/vehicle_type.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
-import 'login_screen.dart';
 import 'pending_approval_screen.dart';
 
 /// Pantalla de registro de nuevos repartidores
@@ -64,14 +66,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _handleRegister() {
     if (_formKey.currentState!.validate()) {
       context.read<AuthCubit>().register(
+        restaurantId: AppConfig.getRestaurantId(),
         name: _nameController.text.trim(),
         email: _emailController.text.trim(),
         password: _passwordController.text,
-        confirmPassword: _confirmPasswordController.text,
         phone: _phoneController.text.trim(),
         vehicleType: _selectedVehicleType.name,
         licensePlate: _licensePlateController.text.trim().toUpperCase(),
-        profileImagePath: _profileImage?.path,
+        photoUrl: _profileImage?.path,
       );
     }
   }
@@ -365,11 +367,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (_) => const LoginScreen(),
-                              ),
-                            );
+                            context.go(AppRoutes.login);
                           },
                           child: Text(
                             'Inicia Sesión',
